@@ -1,0 +1,40 @@
+networks:
+  reverse_proxy:
+    external: true
+    driver: overlay
+  kometa:
+  recyclarr:
+
+volumes:
+  plex-transcode:
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-file: "1"
+    max-size: "50m"
+
+services:
+  #########################################################################
+  plex:
+    image: ghcr.io/hotio/plex:release-1.41.1.9057-af5eaea7a
+    restart: unless-stopped
+    container_name: plex
+    logging: *logging
+    networks: [kometa, reverse_proxy]
+    ports:
+      - 32400:32400
+    volumes:
+      - ./plex/config:/config
+      - plex-transcode:/transcode
+      - /mnt/user/media:/data/media
+    environment:
+      - TZ=America/Chicago
+      - PUID=$DOCKER_UID
+      - PGID=$DOCKER_GID
+      - PLEX_PASS=yes
+    labels:
+      - swag=enable
