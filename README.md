@@ -15,3 +15,5 @@ See linked discussion.
 ## Link to the Renovate issue or Discussion
 
 <https://github.com/renovatebot/renovate/discussions/32611>
+
+Renovate logs [HERE](https://developer.mend.io/github/rcdailey/minimal-reproduction-template).
